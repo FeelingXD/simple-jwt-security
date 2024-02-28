@@ -1,14 +1,24 @@
-server:
-  port :80
+jwt:
+  secretKey: Uuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDw
+
+  auth:
+    atk: ATK
+    rtk: RTK
 
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+  redis:
+    host: localhost
+    port: 6379
+
   datasource:
-    driver-class-name: org.h2.Driver
-    url: 'jdbc:h2:mem:testdb'   # H2 DB ?? ?? (In-Memory Mode)
-#    url: 'jdbc:h2:~/test'    # H2 DB ?? ?? (Embedded Mode)
-    username: username        # H2 DB ?? ID (??? ??)
-    password: password        # H2 DB ?? PW (??? ??)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: 'jdbc:mysql://localhost:3306/simple_auth'
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      show-sql: true
+    database: mysql
+    show-sql: true
+
