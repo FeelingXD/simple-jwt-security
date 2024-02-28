@@ -1,5 +1,6 @@
 package com.example.simpleoauth.service.impl;
 
+import com.example.simpleoauth.config.jwt.JwtTokenProvider;
 import com.example.simpleoauth.domain.dto.SignInDto;
 import com.example.simpleoauth.domain.dto.SignInResultDto;
 import com.example.simpleoauth.domain.dto.SignUpDto;
@@ -17,6 +18,7 @@ public class SignServiceImpl implements SignService {
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider tokenProvider;
 
     @Override
     public void SignUp(SignUpDto dto) {
@@ -34,7 +36,21 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public SignInResultDto SignIn(SignInDto dto) { //Todo 로그인 구현
-        return null;
+        var user = userRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("이메일이 일치하지 않음"));
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) { // 비밀번호가 일치하지 않다면
+            throw new RuntimeException("비밀번호 불일치");
+        }
+        var atk = generateATK(dto.getEmail());
+
+        return SignInResultDto.builder()
+                .ATK(atk)
+                .RTK(null)
+                .build();
+    }
+
+    private String generateATK(String email) {
+        return tokenProvider.generateToken(email);
     }
 
     public boolean checkExistEmail(String email) {
