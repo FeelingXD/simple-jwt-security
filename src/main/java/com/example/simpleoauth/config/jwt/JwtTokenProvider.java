@@ -79,7 +79,8 @@ public class JwtTokenProvider {
         return extractExpired(token).before(new Date());
     }
 
-    public Date extractExpired(String token) {
+
+    private Date extractExpired(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 

@@ -1,6 +1,6 @@
 package com.example.simpleoauth.controller;
 
-import com.example.simpleoauth.domain.UserAuth;
+
 import com.example.simpleoauth.domain.dto.SignInResultDto;
 import com.example.simpleoauth.domain.form.SignInForm;
 import com.example.simpleoauth.domain.form.SignUpForm;
@@ -29,6 +29,7 @@ public class SignController {
         var data = signService.SignIn((SignInForm.toDto(form)));
         return ApiResponse.<SignInResultDto>builder().code(ExampleResponseCode.RESPONSE_SUCCESS).data(data).build();
     }
+
     @PostMapping("/logout") // 로그아웃
     public ApiResponse<Void> logout(HttpServletRequest request){
         signService.logout(request);

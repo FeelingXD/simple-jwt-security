@@ -1,4 +1,4 @@
-rootProject.name = 'simple-oauth'
+rootProject.name = 'simple-jwt'
 sourceControl {
     gitRepository("https://github.com/FeelingXD/common-api-response"){
         producesModule("org.feelingxd:common-api-response")

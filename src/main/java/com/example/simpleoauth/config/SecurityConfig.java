@@ -32,11 +32,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain defaultFilter(HttpSecurity http) throws Exception {
         http.anonymous(AbstractHttpConfigurer::disable);
-        http.csrf((csrf) -> csrf.ignoringRequestMatchers("/**"));
-        http.httpBasic(AbstractHttpConfigurer::disable);
-        http.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
-        // 허용
+
         http.authorizeHttpRequests(request -> {
                     request.requestMatchers("/users/login").permitAll(); //users 의 login 만 허용
                     request.requestMatchers("/users").permitAll();
