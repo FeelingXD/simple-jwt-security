@@ -1,12 +1,15 @@
 package com.example.simpleoauth.controller;
 
+import com.example.simpleoauth.domain.UserAuth;
 import com.example.simpleoauth.domain.dto.SignInResultDto;
 import com.example.simpleoauth.domain.form.SignInForm;
 import com.example.simpleoauth.domain.form.SignUpForm;
 import com.example.simpleoauth.service.SignService;
 import com.github.feelingxd.ApiResponse;
 import com.github.feelingxd.example.ExampleResponseCode;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,6 +28,11 @@ public class SignController {
     public ApiResponse<SignInResultDto> login(@RequestBody SignInForm form) {
         var data = signService.SignIn((SignInForm.toDto(form)));
         return ApiResponse.<SignInResultDto>builder().code(ExampleResponseCode.RESPONSE_SUCCESS).data(data).build();
+    }
+    @PostMapping("/logout") // 로그아웃
+    public ApiResponse<Void> logout(HttpServletRequest request){
+        signService.logout(request);
+        return ApiResponse.<Void>builder().code(ExampleResponseCode.RESPONSE_SUCCESS).build();
     }
 
     @GetMapping("/login-check")
