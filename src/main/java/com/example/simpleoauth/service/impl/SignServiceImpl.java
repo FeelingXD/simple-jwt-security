@@ -8,9 +8,16 @@ import com.example.simpleoauth.domain.entity.User;
 import com.example.simpleoauth.repository.AuthorityRepository;
 import com.example.simpleoauth.repository.UserRepository;
 import com.example.simpleoauth.service.SignService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.concurrent.TimeUnit;
+
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +26,8 @@ public class SignServiceImpl implements SignService {
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
+
+    private final RedisTemplate<String,String> redisTemplate;
 
     @Override
     public void SignUp(SignUpDto dto) {
@@ -32,6 +41,15 @@ public class SignServiceImpl implements SignService {
 
         userRepository.save(newUser); // 저장
     }
+
+    @Override
+    public void logout(HttpServletRequest request) {
+        var ATK=request.getHeader("ATK");
+        var expiration = tokenProvider.extractExpired(ATK);
+        redisTemplate.opsForValue().set(ATK,"logout");
+
+    }
+
 
 
     @Override

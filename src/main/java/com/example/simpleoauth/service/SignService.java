@@ -4,10 +4,14 @@ import com.example.simpleoauth.domain.dto.SignInDto;
 import com.example.simpleoauth.domain.dto.SignInResultDto;
 import com.example.simpleoauth.domain.dto.SignUpDto;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+
 public interface SignService {
     public void SignUp(SignUpDto dto);
 
-    public boolean checkExistEmail(String email);
+
+    public void logout(HttpServletRequest request);
 
     public SignInResultDto SignIn(SignInDto dto);
 }
