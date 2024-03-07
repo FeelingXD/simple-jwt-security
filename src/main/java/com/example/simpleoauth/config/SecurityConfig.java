@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,7 +31,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultFilter(HttpSecurity http) throws Exception {
-        http.anonymous(AbstractHttpConfigurer::disable);
+
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -38,6 +39,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request -> {
                     request.requestMatchers("/users/login").permitAll(); //users 의 login 만 허용
                     request.requestMatchers("/users").permitAll();
+
                 }
         );
         http.authorizeHttpRequests(request -> {
@@ -45,8 +47,14 @@ public class SecurityConfig {
             request.requestMatchers("/users/logout").authenticated();
         });
 
+
         // jwt 필터 추가
         http.addFilterBefore(new JwtAuthFilter(tokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web -> web.ignoring().requestMatchers("/users/reissue");
+    }
+
 }

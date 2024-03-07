@@ -1,6 +1,6 @@
 jwt:
   secretKey: Uuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDwUuzw7RDvqq590sDw
-
+  rtk-prefix: "RTK:"
   auth:
     atk: ATK
     rtk: RTK
