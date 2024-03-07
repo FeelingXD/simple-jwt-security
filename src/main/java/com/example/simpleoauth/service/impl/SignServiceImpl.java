@@ -15,6 +15,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.concurrent.TimeUnit;
+
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +38,8 @@ public class SignServiceImpl implements SignService {
     @Value("${jwt.auth.atk}")
     String ATK_HEADER;
 
+    private final RedisTemplate<String,String> redisTemplate;
+
     @Override
     public void SignUp(SignUpDto dto) {
         if (checkExistEmail(dto.getEmail())) //이메일 중복검사
@@ -48,11 +54,13 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
+
     public void logout(HttpServletRequest request) { //Todo if you logout you may remove your RTK(refresh token)
         var atk = request.getHeader("ATK");
         redisTemplate.opsForValue().set(atk, "logout"); // set ATK logout
         redisTemplate.delete(RTK_PREFIX + tokenProvider.extractUsername(atk)); // remove RTK
     }
+
 
     @Override
     public SignInResultDto SignIn(SignInDto dto) { //Todo 로그인 구현

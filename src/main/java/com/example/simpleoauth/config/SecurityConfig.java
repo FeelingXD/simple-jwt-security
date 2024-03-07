@@ -31,6 +31,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultFilter(HttpSecurity http) throws Exception {
+
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -38,9 +39,13 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request -> {
                     request.requestMatchers("/users/login").permitAll(); //users 의 login 만 허용
                     request.requestMatchers("/users").permitAll();
-                    request.anyRequest().authenticated();
+
                 }
         );
+        http.authorizeHttpRequests(request -> {
+            request.requestMatchers("/users/login-check").authenticated();
+            request.requestMatchers("/users/logout").authenticated();
+        });
 
 
         // jwt 필터 추가
