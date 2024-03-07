@@ -59,10 +59,21 @@ public class JwtTokenProvider {
                 .signWith(secretKey)
                 .compact();
     }
+    public String generateRTKToken() { // create RTK
+        return Jwts
+                .builder()
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION))
+                .signWith(secretKey)
+                .compact();
+    }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(String token, UserDetails userDetails) { // Check ATK
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    }
+    public boolean isRTKValid(String rtk){ // Check RTK valid
+        return isTokenExpired(rtk);
     }
 
 
@@ -75,7 +86,7 @@ public class JwtTokenProvider {
         return extractClaim(token, Claims::getSubject);
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpired(token).before(new Date());
     }
 
@@ -97,7 +108,7 @@ public class JwtTokenProvider {
     public String resolveATK(HttpServletRequest request) {
         return request.getHeader(ACCESS_TOKEN_HEADER);
     }
-
+    public String resolveRTK(HttpServletRequest request){return request.getHeader(REFRESH_TOKEN_HEADER);}
     public boolean validateToken(String token) {
         return isTokenValid(token, userDetailsService.loadUserByUsername(extractUsername(token)));
     }
