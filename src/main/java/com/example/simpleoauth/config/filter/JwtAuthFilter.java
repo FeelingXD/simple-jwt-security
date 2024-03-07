@@ -23,7 +23,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         var token = jwtTokenProvider.resolveATK(request); // request 에서 ATK 가져오기
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {// 토큰이 비어있지안히고 검증되는 토큰일 경우 로그인 정보생성
+        if (token != null && jwtTokenProvider.validateToken(token)) {// 토큰이 비어있지 않고 검증되는 토큰일 경우 로그인 정보생성
 
             String isLogout = redisTemplate.opsForValue().get(token); // 레디스에서 로그아웃 여부 체크
             if(ObjectUtils.isEmpty(isLogout)) {
