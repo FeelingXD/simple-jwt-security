@@ -22,3 +22,6 @@ spring:
     database: mysql
     show-sql: true
 
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui"

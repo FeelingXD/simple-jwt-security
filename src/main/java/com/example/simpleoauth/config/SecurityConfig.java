@@ -29,6 +29,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    //
     @Bean
     public SecurityFilterChain defaultFilter(HttpSecurity http) throws Exception {
 
@@ -46,8 +47,6 @@ public class SecurityConfig {
             request.requestMatchers("/users/login-check").authenticated();
             request.requestMatchers("/users/logout").authenticated();
         });
-
-
         // jwt 필터 추가
         http.addFilterBefore(new JwtAuthFilter(tokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
         return http.build();
@@ -55,7 +54,9 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers("/users/reissue");
+        return web -> web.ignoring()
+                .requestMatchers("/users/reissue")
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
     }
 
 }

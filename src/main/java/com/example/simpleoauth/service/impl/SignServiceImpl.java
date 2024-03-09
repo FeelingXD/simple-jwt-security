@@ -33,7 +33,6 @@ public class SignServiceImpl implements SignService {
     @Value("${jwt.auth.atk}")
     String ATK_HEADER;
 
-    private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     public void SignUp(SignUpDto dto) {

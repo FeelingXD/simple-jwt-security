@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class SignController {
+public class SignController implements SignApi {
     private final SignService signService;
 
     @PostMapping //회원가입
