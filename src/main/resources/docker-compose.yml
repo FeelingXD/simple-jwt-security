@@ -7,7 +7,7 @@ services:
     environment:
       TZ: Asia/Seoul
       MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: simple_auth
+      MYSQL_DATABASE: simple-jwt-security
       MYSQL_USER: root
 
   redis-docker:
@@ -20,5 +20,5 @@ services:
     ports:
       - "6379:6379"
 networks:
-  simple-auth:
+  simple-jwt-security:
     driver: bridge
