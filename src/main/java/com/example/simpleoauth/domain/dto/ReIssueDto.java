@@ -1,6 +1,7 @@
 package com.example.simpleoauth.domain.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 @Builder
 @Data

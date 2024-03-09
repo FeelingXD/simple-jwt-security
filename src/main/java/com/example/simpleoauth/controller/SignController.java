@@ -1,7 +1,6 @@
 package com.example.simpleoauth.controller;
 
 
-
 import com.example.simpleoauth.domain.dto.ReIssueDto;
 import com.example.simpleoauth.domain.dto.SignInResultDto;
 import com.example.simpleoauth.domain.form.SignInForm;
@@ -11,7 +10,6 @@ import com.github.feelingxd.ApiResponse;
 import com.github.feelingxd.example.ExampleResponseCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,7 +31,7 @@ public class SignController {
     }
 
     @PostMapping("/logout") // 로그아웃
-    public ApiResponse<Void> logout(HttpServletRequest request){
+    public ApiResponse<Void> logout(HttpServletRequest request) {
         signService.logout(request);
         return ApiResponse.<Void>builder().code(ExampleResponseCode.RESPONSE_SUCCESS).build();
     }
@@ -42,9 +40,10 @@ public class SignController {
     public ApiResponse<Void> loginCheck() {
         return ApiResponse.<Void>builder().code(ExampleResponseCode.RESPONSE_SUCCESS).build();
     }
+
     @GetMapping("/reissue")
-    public ApiResponse<ReIssueDto> reissue(HttpServletRequest req){
-        var data=signService.reIssue(req);
+    public ApiResponse<ReIssueDto> reissue(HttpServletRequest req) {
+        var data = signService.reIssue(req);
         return ApiResponse.<ReIssueDto>builder().code(ExampleResponseCode.RESPONSE_SUCCESS).data(data).build();
     }
 }

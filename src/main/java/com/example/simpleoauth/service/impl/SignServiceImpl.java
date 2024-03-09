@@ -15,12 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
-import java.util.concurrent.TimeUnit;
-
-
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -38,7 +33,7 @@ public class SignServiceImpl implements SignService {
     @Value("${jwt.auth.atk}")
     String ATK_HEADER;
 
-    private final RedisTemplate<String,String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     public void SignUp(SignUpDto dto) {
@@ -74,7 +69,7 @@ public class SignServiceImpl implements SignService {
 
         redisTemplate.opsForValue().set(RTK_PREFIX + user.getEmail(), rtk, tokenProvider.extractClaim(rtk, claims -> claims.getExpiration().getTime()), TimeUnit.MILLISECONDS);
 
-        redisTemplate.opsForValue().set(rtk,user.getEmail(),tokenProvider.extractClaim(rtk, claims -> claims.getExpiration().getTime()), TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(rtk, user.getEmail(), tokenProvider.extractClaim(rtk, claims -> claims.getExpiration().getTime()), TimeUnit.MILLISECONDS);
         return SignInResultDto.builder()
                 .ATK(atk)
                 .RTK(rtk)
@@ -102,7 +97,7 @@ public class SignServiceImpl implements SignService {
             return ReIssueDto.builder()
                     .ATK(generateATK(user_email))
                     .build();
-        } else{ // RTK expired
+        } else { // RTK expired
             throw new RuntimeException("RTK 만료 새로 로그인해 주세요");
         }
     }
